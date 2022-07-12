@@ -17,6 +17,7 @@ namespace Niantic.ARDK.Extensions {
     [SerializeField]
     private float textureScale = 0.0f;
 
+    public Niantic.ARDK.AR.Anchors.PlaneAlignment _planeAlignment;
     private void Awake() {
       propBlock = new MaterialPropertyBlock();
 

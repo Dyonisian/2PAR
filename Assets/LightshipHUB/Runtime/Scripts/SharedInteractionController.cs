@@ -17,6 +17,7 @@ namespace Niantic.ARDK.Templates
     {
         public SharedSession SharedSession;
         public float TriggerDistance = 1.5f;
+        bool _isObjectPlaced = false;
 
         private void Update() 
         {
@@ -68,7 +69,7 @@ namespace Niantic.ARDK.Templates
                 }
             } 
             else 
-            {
+            {                
                 var hitTestResults = currentFrame.HitTest (
                     SharedSession._camera.pixelWidth, 
                     SharedSession._camera.pixelHeight, 
@@ -78,6 +79,7 @@ namespace Niantic.ARDK.Templates
 
                 if (hitTestResults.Count <= 0) return;
 
+                _isObjectPlaced = true;
                 var position = hitTestResults[0].WorldTransform.ToPosition();
 
                 if (SharedSession._isHost) 
@@ -86,10 +88,12 @@ namespace Niantic.ARDK.Templates
                     {
                         SharedSession.SharedObjectHolder.gameObject.SetActive(true);
                     }
+                    if(!_isObjectPlaced)
                     SharedSession.SharedObjectHolder.MoveObject(position);
                 }
                 else 
                 {   
+                    if(!_isObjectPlaced)
                     SharedSession._messagingManager.AskHostToMoveObject(SharedSession._host, position);
                 }
             }

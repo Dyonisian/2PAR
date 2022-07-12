@@ -24,7 +24,7 @@ namespace Niantic.ARDK.Templates
         [HideInInspector]
         public Text SessionIDText;
         [HideInInspector]
-        public IARNetworking _arNetworking;
+        public IARNetworking _arNetworking;       
         [HideInInspector]
         public MessagingManager _messagingManager;
         public SharedObjectHolder SharedObjectHolder;
@@ -44,6 +44,7 @@ namespace Niantic.ARDK.Templates
         {
             ARNetworkingFactory.ARNetworkingInitialized += OnAnyARNetworkingSessionInitialized;
             preloadManager.ProgressUpdated += PreloadProgressUpdated;
+            
         }
 
         private void PreloadProgressUpdated(FeaturePreloadManager.PreloadProgressUpdatedArgs args) 
