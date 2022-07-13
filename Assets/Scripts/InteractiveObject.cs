@@ -8,4 +8,5 @@ public abstract class InteractiveObject : MonoBehaviour
     public int _index;
     public abstract void Trigger();
     public abstract void TriggeredByOther();
+
 }

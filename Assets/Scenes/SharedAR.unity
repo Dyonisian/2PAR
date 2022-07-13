@@ -315,7 +315,7 @@ MonoBehaviour:
   _manageUsingUnityLifecycle: 1
   _planePrefab: {fileID: 1092543363889104, guid: bb977dd62e3e94aa19e67bf5fde29538,
     type: 3}
-  _detectedPlaneTypes: 1
+  _detectedPlaneTypes: 3
 --- !u!114 &189962153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1076,7 +1076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ARPlaneManager: {fileID: 189962152}
-  _wallPrints: {fileID: 0}
+  _wallPrints: {fileID: 1080615979, guid: 1c3945bda9991a64bb0a8ee9ea89a37c, type: 3}
   _wallSpawnOffset: 0
   _ceilingBlood: {fileID: 0}
 --- !u!114 &890368633
@@ -2227,6 +2227,75 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SharedSession: {fileID: 1885850790720551738}
   TriggerDistance: 1.5
+--- !u!1001 &6786389777644431491
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2326290056884674104, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_Name
+      value: uLiquid - Blood - Spray v3(Clone)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8055353812582908582, guid: 04fb785d413de4445945d9c6f64cbf9c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 04fb785d413de4445945d9c6f64cbf9c, type: 3}
 --- !u!1 &7083961555281113688
 GameObject:
   m_ObjectHideFlags: 0
