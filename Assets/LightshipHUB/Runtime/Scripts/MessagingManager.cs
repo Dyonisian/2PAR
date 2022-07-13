@@ -24,7 +24,13 @@ namespace Niantic.ARDK.Templates
             ObjectPositionMessage,
             ObjectScaleMessage,
             ObjectRotationMessage,
-            TriggerInteractive
+            TriggerInteractive,
+            AskHostDrawLine,
+            AskHostAddLine,
+            AskHostStopLine,
+            DrawNewLineMessage,
+            AddToLineMessage,
+            StopLineMessage
         }
 
         internal void InitializeMessagingManager(IMultipeerNetworking networking, SharedSession controller)
@@ -72,6 +78,35 @@ namespace Niantic.ARDK.Templates
                 TransportType.ReliableUnordered
             );
         }
+        internal void AskHostToDrawNewLine(IPeer host, int fingerId, Vector3 touchPosition, Vector3 circlePos, float circleScale)
+        {
+            _networking.SendDataToPeer(
+                (uint)_MessageType.AskHostDrawLine,
+                SerializeUIntVector3Vector3Float(Convert.ToUInt16(fingerId),touchPosition,circlePos,circleScale),
+                host,
+                TransportType.ReliableUnordered
+            );
+        }
+        internal void AskHostToAddToLine(IPeer host, int fingerId, Vector3 touchPosition)
+        {
+            _networking.SendDataToPeer(
+                            (uint)_MessageType.AskHostAddLine,
+                            SerializeUIntVector3(Convert.ToUInt16(fingerId), touchPosition),
+                            host,
+                            TransportType.ReliableUnordered
+                        );
+        }
+
+
+        internal void AskHostToStopLine(IPeer host, int fingerId)
+        {
+            _networking.SendDataToPeer(
+                                        (uint)_MessageType.AskHostStopLine,
+                                        SerializeUint(Convert.ToUInt16(fingerId)),
+                                        host,
+                                        TransportType.ReliableUnordered
+                                    );
+        }        
 
         internal void BroadcastObjectPosition(Vector3 position) 
         {
@@ -106,6 +141,36 @@ namespace Niantic.ARDK.Templates
                 SerializeUint(Convert.ToUInt16(index)),
                 TransportType.UnreliableUnordered
             );
+        }
+        internal void BroadcastDrawNewLine(int fingerId, Vector3 touchPosition, Vector3 circlePos, float circleScale)
+        {
+            _networking.BroadcastData(
+                            (uint)_MessageType.DrawNewLineMessage,
+                            SerializeUIntVector3Vector3Float(Convert.ToUInt16(fingerId), touchPosition, circlePos, circleScale),
+                            TransportType.UnreliableUnordered
+                        );
+        }
+
+        
+
+        internal void BroadcastAddToLine(int fingerId, Vector3 touchPosition)
+        {
+            _networking.BroadcastData(
+                            (uint)_MessageType.AddToLineMessage,
+                            SerializeUIntVector3(Convert.ToUInt16(fingerId), touchPosition),
+                            TransportType.UnreliableUnordered
+                        );
+        }
+
+        
+
+        internal void BroadcastStopLine(int fingerId)
+        {
+            _networking.BroadcastData(
+                           (uint)_MessageType.StopLineMessage,
+                           SerializeUint(Convert.ToUInt16(fingerId)),
+                           TransportType.UnreliableUnordered
+                       );
         }
 
         private void OnDidReceiveDataFromPeer(PeerDataReceivedArgs args) 
@@ -142,10 +207,32 @@ namespace Niantic.ARDK.Templates
                 case _MessageType.TriggerInteractive:
                     _controller.TriggerInteractiveObject(DeserializeUint(data));
                     break;
+                case _MessageType.AskHostDrawLine:
+                case _MessageType.DrawNewLineMessage:
+                    ushort index;
+                    Vector3 touchPos;
+                    Vector3 circlePos;
+                    float circleScale;
+                    DeserializeUintVector3Vector3Float(data, out index, out touchPos, out circlePos, out circleScale);
+                    _controller._arDrawManager.DrawNewLine(index, touchPos, circlePos, circleScale);
+                    break;
+                case _MessageType.AskHostAddLine:
+                case _MessageType.AddToLineMessage:
+                    ushort index2;
+                    Vector3 touchPos2;
+                    DeserializeUintVector3(data, out index2, out touchPos2);
+                    _controller._arDrawManager.AddToLine(index2, touchPos2);
+                    break;
+                case _MessageType.AskHostStopLine:
+                case _MessageType.StopLineMessage:
+                    _controller._arDrawManager.StopLine(DeserializeUint(data));
+                    break;
                 default:
                     throw new ArgumentException("Received unknown tag from message");
             }
         }
+
+        
 
         internal void Destroy() 
         {
@@ -200,6 +287,60 @@ namespace Niantic.ARDK.Templates
             using(var readingStream = new MemoryStream(data))
                 using (var binaryDeserializer = new BinaryDeserializer(readingStream))
                     return QuaternionSerializer.Instance.Deserialize(binaryDeserializer);
+        }
+        private byte[] SerializeUIntVector3Vector3Float(ushort v, Vector3 touchPosition, Vector3 circlePos, float circleScale)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var serializer = new BinarySerializer(stream))
+                {
+                    serializer.Serialize(v);
+                    serializer.Serialize(touchPosition);
+                    serializer.Serialize(circlePos);
+                    serializer.Serialize(circleScale);
+                    return stream.ToArray();
+                }
+            }
+        }
+
+        private byte[] SerializeUIntVector3(ushort v, Vector3 touchPosition)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var serializer = new BinarySerializer(stream))
+                {
+                    serializer.Serialize(v);
+                    serializer.Serialize(touchPosition);                    
+                    return stream.ToArray();
+                }
+            }
+        }
+        private void DeserializeUintVector3(byte[] data, out UInt16 index, out Vector3 touchPosition)
+        {
+            using (var stream = new MemoryStream(data))
+            {
+                using (var deserializer = new BinaryDeserializer(stream))
+                {
+                    index = (ushort)deserializer.Deserialize();
+                    touchPosition = (Vector3)deserializer.Deserialize();                   
+                    // The number and order of the Deserialize() calls should match the Serialize() calls.
+                }
+            }
+        }
+
+        private void DeserializeUintVector3Vector3Float(byte[] data, out UInt16 index, out Vector3 touchPosition, out Vector3 circlePos, out float circleScale)
+        {
+            using (var stream = new MemoryStream(data))
+            {
+                using (var deserializer = new BinaryDeserializer(stream))
+                {
+                    index = (ushort)deserializer.Deserialize(); 
+                    touchPosition = (Vector3)deserializer.Deserialize();
+                    circlePos = (Vector3)deserializer.Deserialize();
+                    circleScale = (float)deserializer.Deserialize();
+                    // The number and order of the Deserialize() calls should match the Serialize() calls.
+                }
+            }
         }
     }
 }

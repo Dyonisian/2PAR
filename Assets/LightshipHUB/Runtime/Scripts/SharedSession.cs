@@ -39,6 +39,8 @@ namespace Niantic.ARDK.Templates
         public bool _isStable;
         [HideInInspector]
         public List<InteractiveObject> _interactiveObjects;
+        
+        public ARDrawManager _arDrawManager;
 
         private void Start() 
         {
@@ -141,6 +143,6 @@ namespace Niantic.ARDK.Templates
         internal void TriggerInteractiveObject(int index)
         {
             _interactiveObjects[index].TriggeredByOther();
-        }
+        }        
     }
 }

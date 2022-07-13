@@ -21,6 +21,7 @@ public class ARDrawManager : MonoBehaviour
 
 
     private Dictionary<int, ARLine> _lines = new Dictionary<int, ARLine>();
+    private Dictionary<int, ARLine> _otherLines = new Dictionary<int, ARLine>();
 
     private bool CanDraw { get; set; }
 
@@ -100,23 +101,67 @@ public class ARDrawManager : MonoBehaviour
                     line.settings = _lineSettings;
                     _lines.Add(touch.fingerId, line);
                     line.AddNewLineRenderer(transform, _sharedSession._arNetworking.ARSession.AddAnchor(transform.localToWorldMatrix), touchPosition);
-                    Vector3 spawnPos = touchPosition;
-                    spawnPos -= spawnPos - _arCamera.transform.position;
-                    spawnPos.y = touchPosition.y;
-                    _protectionCircle.transform.position = spawnPos;
-                    float scale = Vector3.Distance(touchPosition, _arCamera.transform.position);
-                    _protectionCircle.transform.localScale = new Vector3(scale, scale, scale);
+                    Vector3 circlePos = touchPosition;
+                    circlePos -= circlePos - _arCamera.transform.position;
+                    circlePos.y = touchPosition.y;
+                    _protectionCircle.transform.position = circlePos;
+                    float circleScale = Vector3.Distance(touchPosition, _arCamera.transform.position);
+                    _protectionCircle.transform.localScale = new Vector3(circleScale, circleScale, circleScale);
                     _protectionCircle.Reset();
+
+                    if (_sharedSession._isHost)
+                    {
+                        _sharedSession._messagingManager.BroadcastDrawNewLine(touch.fingerId, touchPosition, circlePos, circleScale);
+                    }
+                    else
+                    {
+                        _sharedSession._messagingManager.AskHostToDrawNewLine(_sharedSession._host, touch.fingerId, touchPosition, circlePos, circleScale);
+                    }
                 }
                 else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                 {
                     _lines[touch.fingerId].AddPoint(touchPosition);
+                    if (_sharedSession._isHost)
+                    {
+                        _sharedSession._messagingManager.BroadcastAddToLine(touch.fingerId, touchPosition);
+                    }
+                    else
+                    {
+                        _sharedSession._messagingManager.AskHostToAddToLine(_sharedSession._host, touch.fingerId, touchPosition);
+                    }
                 }
                 else if (touch.phase == TouchPhase.Ended)
                 {
                     _lines.Remove(touch.fingerId);
+                    if (_sharedSession._isHost)
+                    {
+                        _sharedSession._messagingManager.BroadcastStopLine(touch.fingerId);
+                    }
+                    else
+                    {
+                        _sharedSession._messagingManager.AskHostToStopLine(_sharedSession._host, touch.fingerId);
+                    }
                 }
             }
+    }
+    public void DrawNewLine(int index, Vector3 position, Vector3 circlePos, float circleScale)
+    {
+        ARLine line = gameObject.AddComponent<ARLine>();
+        line.settings = _lineSettings;
+        _otherLines.Add(index, line);
+        line.AddNewLineRenderer(transform, _sharedSession._arNetworking.ARSession.AddAnchor(transform.localToWorldMatrix), position);
+        
+        _protectionCircle.transform.position = circlePos;
+        _protectionCircle.transform.localScale = new Vector3(circleScale, circleScale, circleScale);
+        _protectionCircle.Reset();
+    }
+    public void AddToLine(int index, Vector3 position)
+    {
+        _otherLines[index].AddPoint(position);
+    }
+    public void StopLine(int index)
+    {
+        _otherLines.Remove(index);
     }
 
     void DrawOnMouse()
