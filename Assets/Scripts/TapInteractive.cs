@@ -21,7 +21,7 @@ public class TapInteractive : InteractiveObject
         {
             _currentTaps = -1000;
             _destroyEffect.Play();
-            Destroy(gameObject, _destroyDelay);
+            DisableWithDelay(_destroyDelay);
         }
     }
 
@@ -33,8 +33,13 @@ public class TapInteractive : InteractiveObject
         {
             _currentTaps = -1000;
             _destroyEffect.Play();
-            Destroy(gameObject, _destroyDelay);
+            DisableWithDelay(_destroyDelay);
         }
+    }
+    IEnumerator DisableWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update

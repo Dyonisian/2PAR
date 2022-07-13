@@ -6,7 +6,10 @@ public abstract class InteractiveObject : MonoBehaviour
 {
     [HideInInspector]
     public int _index;
+    
+    public bool _shouldBroadcast;
     public abstract void Trigger();
     public abstract void TriggeredByOther();
+
 
 }

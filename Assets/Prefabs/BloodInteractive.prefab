@@ -9578,6 +9578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4804383646912296714}
   - component: {fileID: 2709272543036580692}
+  - component: {fileID: 2064062636621993722}
   m_Layer: 0
   m_Name: BloodInteractive
   m_TagString: Untagged
@@ -9617,10 +9618,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
+  _sharedSession: {fileID: 0}
+  _shouldBroadcast: 0
   _tapsNeeded: 10
   _tapEffect: {fileID: 6512463718884009593}
   _destroyEffect: {fileID: 2394472124067286629}
   _destroyDelay: 2
+--- !u!135 &2064062636621993722
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8445940831501662484}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8567680534114774371
 GameObject:
   m_ObjectHideFlags: 0

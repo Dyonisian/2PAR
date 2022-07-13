@@ -11,17 +11,22 @@ public class EnterPortal : InteractiveObject
     UnityEngine.Rendering.Volume _postProcessVolume;
     [SerializeField]
     ParticleSystem _portalParticles;
+    [SerializeField]
+    GameManager _gameManager;
     public override void Trigger()
     {
         _postProcessVolume.enabled = true;
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
+        _gameManager.ChangeGameState(0);
     }
     public override void TriggeredByOther()
     {
         _postProcessVolume.enabled = true;
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
+        _gameManager.ChangeGameState(0);
+
     }
 
     // Start is called before the first frame update

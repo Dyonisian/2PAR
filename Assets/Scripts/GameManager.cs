@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     float _wallSpawnOffset;
     [SerializeField]
     TapInteractive _ceilingBlood;
+    public Niantic.ARDK.Templates.SharedSession _sharedSession;
+
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +27,11 @@ public class GameManager : MonoBehaviour
     {
         
     }
-    void ChangeGameState(int newState)
+    public void ChangeGameState(int newState)
     {
+        if (_gameState == newState)
+            return;
+        _gameState = newState;
         switch(newState)
         {
             case 0:
@@ -40,15 +45,25 @@ public class GameManager : MonoBehaviour
     }
     void StartPhase0()
     {
-        GameObject spawnTransform = null;
-        _ARPlaneManager.AddToWall(out spawnTransform);
-        _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.forward * _wallSpawnOffset;
-        _wallPrints.transform.rotation = spawnTransform.transform.rotation;
-        _wallPrints.gameObject.SetActive(true);
+        if (_sharedSession._isHost)
+        {
+            GameObject spawnTransform = null;
+            _ARPlaneManager.AddToWall(out spawnTransform);
+            _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.forward * _wallSpawnOffset;
+            _wallPrints.transform.rotation = spawnTransform.transform.rotation;
+            _wallPrints.gameObject.SetActive(true);
 
-        _ARPlaneManager.AddToCeiling(out spawnTransform);
-        _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.up * _wallSpawnOffset;
-        _ceilingBlood.gameObject.SetActive(true);
+            _ARPlaneManager.AddToCeiling(out spawnTransform);
+            _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.up * _wallSpawnOffset;
+            _ceilingBlood.gameObject.SetActive(true);
+
+            //_sharedSession._messagingManager.BroadcastPhase(0);
+
+        }
+        else
+        {
+            //_sharedSession._messagingManager.AskPhase(_sharedSession._host, 0);
+        }
     }
     void StartPhase1()
     {

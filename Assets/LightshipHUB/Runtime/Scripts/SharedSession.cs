@@ -36,9 +36,9 @@ namespace Niantic.ARDK.Templates
         [HideInInspector]
         public bool _isHost;
         [HideInInspector]
-        public bool _isStable;
-        [HideInInspector]
-        public List<InteractiveObject> _interactiveObjects;
+        public bool _isStable;       
+        public InteractiveObjectsManager _interactiveObjectsManager;
+        public GameManager _gameManager;
         
         public ARDrawManager _arDrawManager;
 
@@ -142,7 +142,19 @@ namespace Niantic.ARDK.Templates
         }
         internal void TriggerInteractiveObject(int index)
         {
-            _interactiveObjects[index].TriggeredByOther();
-        }        
+            _interactiveObjectsManager.TriggerInteractiveObject(index);
+        }   
+        internal void SetInteractiveObjectPosition(int index, Vector3 position)
+        {
+            _interactiveObjectsManager.SetObjectPosition(index, position);
+        }
+        internal void SetInteractiveObjectRotation(int index, Quaternion rotation)
+        {
+            _interactiveObjectsManager.SetObjectRotation(index, rotation);
+        }
+        internal void SetGamePhase(int index)
+        {
+            _gameManager.ChangeGameState(index);
+        }
     }
 }

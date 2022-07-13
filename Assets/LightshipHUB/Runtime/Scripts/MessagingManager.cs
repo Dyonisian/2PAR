@@ -30,8 +30,16 @@ namespace Niantic.ARDK.Templates
             AskHostStopLine,
             DrawNewLineMessage,
             AddToLineMessage,
-            StopLineMessage
+            StopLineMessage,
+            InteractiveObjectPositionMessage,
+            InteractiveObjectRotationMessage,
+            PhaseMessage,
+            AskPhase
         }
+
+       
+
+        
 
         internal void InitializeMessagingManager(IMultipeerNetworking networking, SharedSession controller)
         {
@@ -49,6 +57,26 @@ namespace Niantic.ARDK.Templates
                 TransportType.ReliableUnordered
             );
         }
+
+        internal void BroadcastPhase(int v)
+        {
+            _networking.BroadcastData(
+                (uint)_MessageType.PhaseMessage,
+                SerializeUint(Convert.ToUInt16(v)),
+                TransportType.UnreliableUnordered
+            );
+        }
+
+        internal void AskPhase(IPeer host, int v)
+        {
+            _networking.SendDataToPeer(
+                            (uint)_MessageType.AskPhase,
+                            SerializeUint(Convert.ToUInt16(v)),
+                            host,
+                            TransportType.ReliableUnordered
+                        );
+        }
+
         internal void AskHostToTriggerObject(IPeer host, int index)
         {
             _networking.SendDataToPeer(
@@ -116,7 +144,15 @@ namespace Niantic.ARDK.Templates
                 TransportType.UnreliableUnordered
             );
         }
+        internal void BroadcastInteractiveObjectPosition(int i, Vector3 position)
+        {
+            _networking.BroadcastData(
+                (uint)_MessageType.InteractiveObjectPositionMessage,
+                SerializeUIntVector3(Convert.ToUInt16(i), position),
+                TransportType.UnreliableUnordered
+            );
 
+        }
         internal void BroadcastObjectScale(Vector3 scale) 
         {
             _networking.BroadcastData (
@@ -134,6 +170,15 @@ namespace Niantic.ARDK.Templates
                 TransportType.UnreliableUnordered
             );
         }
+        internal void BroadcastInteractiveObjectRotation(int i, Quaternion rotation)
+        {
+            _networking.BroadcastData(
+               (uint)_MessageType.InteractiveObjectRotationMessage,
+               SerializeUIntQuaternion(Convert.ToUInt16(i), rotation),
+               TransportType.UnreliableUnordered
+           );
+        }        
+
         internal void BroadcastTriggerObject(int index)
         {
             _networking.BroadcastData(
@@ -227,6 +272,22 @@ namespace Niantic.ARDK.Templates
                 case _MessageType.StopLineMessage:
                     _controller._arDrawManager.StopLine(DeserializeUint(data));
                     break;
+                case _MessageType.InteractiveObjectPositionMessage:
+                    ushort index3;
+                    Vector3 pos3;
+                    DeserializeUintVector3(data, out index3, out pos3);
+                    _controller.SetInteractiveObjectPosition(index3, pos3);
+                    break;
+                case _MessageType.InteractiveObjectRotationMessage:
+                    ushort index4;
+                    Quaternion rot;
+                    DeserializeUintQuaternion(data, out index4, out rot);
+                    _controller.SetInteractiveObjectRotation(index4,rot);
+                    break;
+                case _MessageType.AskPhase:
+                case _MessageType.PhaseMessage:
+                    _controller.SetGamePhase(DeserializeUint(data));
+                    break;
                 default:
                     throw new ArgumentException("Received unknown tag from message");
             }
@@ -281,6 +342,30 @@ namespace Niantic.ARDK.Templates
 
                 return _builderMemoryStream.ToArray();
         }
+        private byte[] SerializeUIntQuaternion(ushort i, Quaternion rotation)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var serializer = new BinarySerializer(stream))
+                {
+                    serializer.Serialize(i);
+                    serializer.Serialize(rotation);
+                    return stream.ToArray();
+                }
+            }
+        }
+        private void DeserializeUintQuaternion(byte[] data, out UInt16 index, out Quaternion rotation)
+        {
+            using (var stream = new MemoryStream(data))
+            {
+                using (var deserializer = new BinaryDeserializer(stream))
+                {
+                    index = (ushort)deserializer.Deserialize();
+                    rotation = (Quaternion)deserializer.Deserialize();
+                    // The number and order of the Deserialize() calls should match the Serialize() calls.
+                }
+            }
+        }
 
         private Quaternion DeserializeQuaternion(byte[] data) 
         {
@@ -288,6 +373,7 @@ namespace Niantic.ARDK.Templates
                 using (var binaryDeserializer = new BinaryDeserializer(readingStream))
                     return QuaternionSerializer.Instance.Deserialize(binaryDeserializer);
         }
+        
         private byte[] SerializeUIntVector3Vector3Float(ushort v, Vector3 touchPosition, Vector3 circlePos, float circleScale)
         {
             using (var stream = new MemoryStream())
@@ -338,7 +424,6 @@ namespace Niantic.ARDK.Templates
                     touchPosition = (Vector3)deserializer.Deserialize();
                     circlePos = (Vector3)deserializer.Deserialize();
                     circleScale = (float)deserializer.Deserialize();
-                    // The number and order of the Deserialize() calls should match the Serialize() calls.
                 }
             }
         }
