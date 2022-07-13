@@ -15,10 +15,10 @@ MonoBehaviour:
   lineTagName: Line
   startColor: {r: 1, g: 1, b: 1, a: 1}
   endColor: {r: 1, g: 1, b: 1, a: 1}
-  startWidth: 0.01
-  endWidth: 0.01
+  startWidth: 0.05
+  endWidth: 0.05
   distanceFromCamera: 0.3
-  defaultMaterial: {fileID: 0}
+  defaultMaterial: {fileID: 2100000, guid: 0518d6102f3cd204ba1e4f236dcade3d, type: 2}
   cornerVertices: 5
   endCapVertices: 5
   minDistanceBeforeNewPoint: 0.001

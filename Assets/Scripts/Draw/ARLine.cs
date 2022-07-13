@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Niantic.ARDK.Utilities;
 
 public class ARLine : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class ARLine : MonoBehaviour
 
     private LineRenderer LineRenderer { get; set; }
 
-    private LineSettings settings;
+    public LineSettings settings;
 
     public ARLine(LineSettings settings)
     {
@@ -40,8 +41,8 @@ public class ARLine : MonoBehaviour
     }
     private void Update()
     {
-        //transform.position = _arAnchor.Transform.ToPosition();
-        //transform.rotation = _arAnchor.Transform.ToRotation();
+        transform.position = _arAnchor.Transform.ToPosition();
+        transform.rotation = _arAnchor.Transform.ToRotation();
     }
 
 
