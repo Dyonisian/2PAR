@@ -583,11 +583,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _index: 0
-  _sharedSession: {fileID: 0}
   _shouldBroadcast: 0
   _dustParticles: {fileID: 666085194}
   _postProcessVolume: {fileID: 748261099}
   _portalParticles: {fileID: 1728962227}
+  _gameManager: {fileID: 890368632}
 --- !u!1 &540622870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,9 +1078,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ARPlaneManager: {fileID: 189962152}
-  _wallPrints: {fileID: 1080615979, guid: 1c3945bda9991a64bb0a8ee9ea89a37c, type: 3}
-  _wallSpawnOffset: 0
-  _ceilingBlood: {fileID: 0}
+  _wallPrints: {fileID: 1325306307599778765}
+  _wallSpawnOffset: 0.1
+  _ceilingBlood: {fileID: 6394237615442159894}
+  _sharedSession: {fileID: 1885850790720551738}
 --- !u!114 &890368633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1268,6 +1269,10 @@ PrefabInstance:
     - target: {fileID: 1717991288866742, guid: 1c3945bda9991a64bb0a8ee9ea89a37c, type: 3}
       propertyPath: m_Name
       value: HRR_Axe_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717991288866742, guid: 1c3945bda9991a64bb0a8ee9ea89a37c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4900444789763622, guid: 1c3945bda9991a64bb0a8ee9ea89a37c, type: 3}
       propertyPath: m_RootOrder
@@ -1886,6 +1891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42b1466807d58224280d3319f4590e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sharedSession: {fileID: 1885850790720551738}
   _interactiveObjects:
   - {fileID: 512826236}
   - {fileID: 1325306307599778765}
@@ -1925,8 +1931,9 @@ MonoBehaviour:
   _arManager: {fileID: 189962150}
   _isHost: 0
   _isStable: 0
-  _interactiveObjects: []
-  _arDrawManager: {fileID: 0}
+  _interactiveObjectsManager: {fileID: 1885850790720551736}
+  _gameManager: {fileID: 890368632}
+  _arDrawManager: {fileID: 890368633}
 --- !u!1 &2089584980446124206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,11 +2306,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2709272543036580692, guid: 4a2586983ae002448a9e149f17bff2c1,
-        type: 3}
-      propertyPath: _shouldBroadcast
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4804383646912296714, guid: 4a2586983ae002448a9e149f17bff2c1,
         type: 3}
       propertyPath: m_RootOrder
@@ -2363,11 +2365,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BloodInteractive
-      objectReference: {fileID: 0}
-    - target: {fileID: 8445940831501662484, guid: 4a2586983ae002448a9e149f17bff2c1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a2586983ae002448a9e149f17bff2c1, type: 3}

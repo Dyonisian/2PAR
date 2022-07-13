@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    int _gameState = 0;
+    int _gameState = -1;
     [SerializeField]
     Niantic.ARDK.Extensions.ARPlaneManager _ARPlaneManager;
     [SerializeField]
@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
             GameObject spawnTransform = null;
             _ARPlaneManager.AddToWall(out spawnTransform);
             _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.forward * _wallSpawnOffset;
-            _wallPrints.transform.rotation = spawnTransform.transform.rotation;
+            //_wallPrints.transform.rotation = spawnTransform.transform.rotation;
+            //_wallPrints.transform.forward = spawnTransform.transform.forward;
             _wallPrints.gameObject.SetActive(true);
 
             _ARPlaneManager.AddToCeiling(out spawnTransform);

@@ -35,13 +35,14 @@ public class ProtectionCircle : MonoBehaviour
             _particleSystem.Play();
         if(_health<0.0f)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     public void Reset()
     {
         _health = 100;
         _particleSystem.Stop();
+        gameObject.SetActive(true);
     }
 
 }

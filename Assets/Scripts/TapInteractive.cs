@@ -21,7 +21,7 @@ public class TapInteractive : InteractiveObject
         {
             _currentTaps = -1000;
             _destroyEffect.Play();
-            DisableWithDelay(_destroyDelay);
+            StartCoroutine(DisableWithDelay(_destroyDelay));
         }
     }
 
@@ -33,7 +33,7 @@ public class TapInteractive : InteractiveObject
         {
             _currentTaps = -1000;
             _destroyEffect.Play();
-            DisableWithDelay(_destroyDelay);
+            StartCoroutine(DisableWithDelay(_destroyDelay));
         }
     }
     IEnumerator DisableWithDelay(float delay)
