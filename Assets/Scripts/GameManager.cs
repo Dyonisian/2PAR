@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     float _delayBetweenSpawns = 10.0f;
 
+    [SerializeField]
     int _activeObjects = 0;
 
     // Start is called before the first frame update
@@ -84,6 +85,10 @@ public class GameManager : MonoBehaviour
         if(_sharedSession._isHost && _gameState ==1 && _ghostsAlive == 0)
         {
             ChangeGameState(2);
+        }
+        if (_sharedSession._isHost && _gameState == 2 && _activeObjects <= 0)
+        {
+            ChangeGameState(3);
         }
         _timeSinceHit += Time.deltaTime;
         if(_timeSinceHit > _healCooldown && _playerHealth<100.0f)
@@ -199,6 +204,7 @@ public class GameManager : MonoBehaviour
             Vector3 lookTargetOldPos = _lookTarget.transform.position;
             _lookTarget.transform.position = new Vector3(_lookTarget.transform.position.x, _ghostStanding.transform.position.y, _lookTarget.transform.position.z);
             _lookTarget.transform.position = _ghostStanding.transform.position - Camera.main.transform.position;
+            _lookTarget.transform.position = new Vector3(_lookTarget.transform.position.x, _ghostStanding.transform.position.y, _lookTarget.transform.position.z);
             _ghostStanding.transform.LookAt(_lookTarget.transform);
             _lookTarget.transform.position = lookTargetOldPos;
             _ghostStanding._isHost = _sharedSession._isHost;
@@ -239,7 +245,26 @@ public class GameManager : MonoBehaviour
         _debugText.text = "Started phase 3!";
         if (_sharedSession._isHost)
         {
+            
+            _ghostOnPlayer.transform.position = Camera.main.transform.position + Vector3.up * _wallSpawnOffset;
+            Vector3 lookTargetOldPos = _lookTarget.transform.position;
+            _lookTarget.transform.position = new Vector3(_lookTarget.transform.position.x, _ghostOnPlayer.transform.position.y, _lookTarget.transform.position.z);
+            _lookTarget.transform.position = Camera.main.transform.position + Camera.main.transform.forward;
+            _lookTarget.transform.position = new Vector3(_lookTarget.transform.position.x, _ghostOnPlayer.transform.position.y, _lookTarget.transform.position.z);
+            _ghostOnPlayer.transform.LookAt(_lookTarget.transform);
+            _lookTarget.transform.position = lookTargetOldPos;
+            _ghostOnPlayer._isHost = _sharedSession._isHost;
+            _ghostOnPlayer._moveSpeed = _ghostMoveSpeed;
+            _ghostOnPlayer._alwaysMove = true;
 
+            StartCoroutine(SetActiveWithDelay(_ghostOnPlayer.gameObject, 0));
+            _activeObjects++;
+            _ghostOnPlayer.OnInteractiveDisable -= InteractiveDisabled;
+            _ghostOnPlayer.OnInteractiveDisable += InteractiveDisabled;
+            _ghostOnPlayer.OnHitPlayer -= Hit;
+            _ghostOnPlayer.OnHitPlayer += Hit;
+
+            Debug.Log("Starting Phase 3!");
             _sharedSession._messagingManager.BroadcastPhase(3);
         }
     }

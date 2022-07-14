@@ -3880,6 +3880,7 @@ MonoBehaviour:
   _lookTarget: {fileID: 15550477}
   _debugText: {fileID: 383718980}
   _delayBetweenSpawns: 1
+  _activeObjects: 0
 --- !u!114 &890368633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5192,6 +5193,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: vileHag
+      objectReference: {fileID: 0}
+    - target: {fileID: 240687048333084878, guid: 9a8d5000c078791428ec2daa2d4ea5f1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1786539994472672718, guid: 9a8d5000c078791428ec2daa2d4ea5f1,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Root_M'\n\tTransform 'Scapula_R'\n\tTransform
+        'Neck_M'\n\tTransform 'Knee_R'\n\tTransform 'IndexFinger2_R'\n\tTransform
+        'PinkyFinger1_L'\n\tTransform 'MiddleFinger2_R'\n\tTransform 'Wrist_L'\n\tTransform
+        'MiddleFinger3_L'\n\tTransform 'MiddleFinger1_R'\n\tand more ...\n\tFrom
+        animation clip 'HagSit_copy'"
       objectReference: {fileID: 0}
     - target: {fileID: 3712846159145200032, guid: 9a8d5000c078791428ec2daa2d4ea5f1,
         type: 3}
@@ -7982,6 +7999,16 @@ PrefabInstance:
       propertyPath: _lookTarget
       value: 
       objectReference: {fileID: 15550477}
+    - target: {fileID: 6348809885613629816, guid: 32fc3dd191e6e804f9814fd1c1382706,
+        type: 3}
+      propertyPath: _firstAnimTriggerName
+      value: IsSitting
+      objectReference: {fileID: 0}
+    - target: {fileID: 6348809885613629816, guid: 32fc3dd191e6e804f9814fd1c1382706,
+        type: 3}
+      propertyPath: _isActivatedOnSecondLook
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6578799646772334323, guid: 32fc3dd191e6e804f9814fd1c1382706,
         type: 3}
       propertyPath: m_Name

@@ -316,8 +316,8 @@ GameObject:
   - component: {fileID: 2741447435023383997}
   - component: {fileID: 2741447435014345271}
   - component: {fileID: 2741447435023771477}
-  - component: {fileID: 2741447435023771465}
   - component: {fileID: 2741447435023771466}
+  - component: {fileID: 2741447435023771465}
   m_Layer: 0
   m_Name: crawler
   m_TagString: Untagged
@@ -379,6 +379,42 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2.62, z: 0}
+--- !u!114 &2741447435023771466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2741447435023736925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7e1abdf7be6a04da3cdb90944254d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _index: 0
+  _shouldBroadcast: 1
+  _isActivatedOnLook: 1
+  _isActivatedOnLookAway: 0
+  _isActivatedOnSecondLook: 0
+  _isActivatedOnTrigger: 0
+  _audioSource: {fileID: 2741447435023771465}
+  _spawnAudio: {fileID: 0}
+  _tapAudio: {fileID: 0}
+  _dieAudio: {fileID: 0}
+  _nearAudio: {fileID: 8300000, guid: 821b6440d8e269c40b5a0eb8a44a079d, type: 3}
+  _audioDelay: 3
+  _tapsNeeded: 20
+  _tapEffect: {fileID: 3939867220138640522}
+  _destroyEffect: {fileID: 5264132965249116104}
+  _destroyDelay: 1
+  _floorObject: {fileID: 0}
+  _animator: {fileID: 2741447435014345271}
+  _lookTarget: {fileID: 0}
+  _isHost: 0
+  _alwaysMove: 0
+  _moveSpeed: 0
+  _attackTriggerName: IsAttack
+  _firstAnimTriggerName: 
 --- !u!82 &2741447435023771465
 AudioSource:
   m_ObjectHideFlags: 0
@@ -475,40 +511,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2741447435023771466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2741447435023736925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7e1abdf7be6a04da3cdb90944254d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _index: 0
-  _shouldBroadcast: 1
-  _isActivatedOnLook: 1
-  _isActivatedOnLookAway: 0
-  _isActivatedOnSecondLook: 0
-  _isActivatedOnTrigger: 0
-  _audioSource: {fileID: 2741447435023771465}
-  _spawnAudio: {fileID: 0}
-  _tapAudio: {fileID: 0}
-  _dieAudio: {fileID: 0}
-  _nearAudio: {fileID: 8300000, guid: 821b6440d8e269c40b5a0eb8a44a079d, type: 3}
-  _audioDelay: 3
-  _tapsNeeded: 20
-  _tapEffect: {fileID: 3939867220138640522}
-  _destroyEffect: {fileID: 5264132965249116104}
-  _destroyDelay: 1
-  _floorObject: {fileID: 0}
-  _animator: {fileID: 2741447435014345271}
-  _lookTarget: {fileID: 0}
-  _isHost: 0
-  _moveSpeed: 0
-  _attackTriggerName: IsAttack
 --- !u!1 &2741447435023736927
 GameObject:
   m_ObjectHideFlags: 0

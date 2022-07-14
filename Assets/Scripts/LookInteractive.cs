@@ -17,9 +17,13 @@ public class LookInteractive : TapInteractive
     bool _isSecondLook = false;
     bool _isAttacking = false;
     [HideInInspector]
+    public bool _alwaysMove = false;
+    [HideInInspector]
     public float _moveSpeed;
     [SerializeField]
     string _attackTriggerName;
+    [SerializeField]
+    string _firstAnimTriggerName;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +39,7 @@ public class LookInteractive : TapInteractive
             _audioTimer = 0.0f;
             if (Random.Range(0, 100) > 50)
             {
-                if (_audioSource && _nearAudio && !_audioSource.isPlaying && Vector3.Distance(transform.position, Camera.main.transform.position - Vector3.up / 2.0f) < 2.0f)
+                if (_isAttacking && _audioSource && _nearAudio && !_audioSource.isPlaying && Vector3.Distance(transform.position, Camera.main.transform.position - Vector3.up / 2.0f) < 2.0f)
                 {
                     _audioSource.clip = _nearAudio;
                     _audioSource.Play();
@@ -54,17 +58,27 @@ public class LookInteractive : TapInteractive
                 if (_isHost)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, Camera.main.transform.position - Vector3.up / 1.5f, _moveSpeed / 100.0f);
+                    transform.LookAt(_lookTarget.transform);
                 }
             }
             else
             {
                 OnHitPlayer?.Invoke();
             }
-            transform.LookAt(_lookTarget.transform);
+        }
+        if(_alwaysMove)
+        {
+            if (_isHost)
+            {
+                if (Vector3.Distance(transform.position, Camera.main.transform.position - Vector3.up / 2.0f) > 0.5f)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, Camera.main.transform.position - Vector3.up / 1.5f, _moveSpeed / 100.0f);
+                }
+                transform.LookAt(_lookTarget.transform);
+            }
         }
 
         float gaze = Vector3.Dot(Camera.main.transform.forward, (transform.position - Camera.main.transform.position).normalized);
-        Debug.Log("Gaze is: " + gaze);
         if(!_isLookedAt && gaze>0.8f)
         {
             _isLookedAt = true;
@@ -125,5 +139,10 @@ public class LookInteractive : TapInteractive
             _destroyEffect.Play();
             StartCoroutine(DisableWithDelay(_destroyDelay));
         }
+    }
+    private void OnEnable()
+    {
+        if(_firstAnimTriggerName!="")
+        _animator.SetBool(_firstAnimTriggerName, true);
     }
 }
