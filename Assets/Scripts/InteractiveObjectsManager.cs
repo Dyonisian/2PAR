@@ -15,24 +15,29 @@ public class InteractiveObjectsManager : MonoBehaviour
         {
             _interactiveObjects[i]._index = i;
         }
+        _interactiveObjects.AddRange(_ghosts);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_sharedSession._isHost)
-        for (int i = 0; i < _interactiveObjects.Count; i++)
+        if (_sharedSession._isHost)
         {
-            if(_interactiveObjects[i].gameObject.activeSelf && _interactiveObjects[i]._shouldBroadcast)
+            for (int i = 0; i < _interactiveObjects.Count; i++)
+            {
+                if (_interactiveObjects[i].gameObject.activeSelf && _interactiveObjects[i]._shouldBroadcast)
                 {
-                    _sharedSession._messagingManager.BroadcastInteractiveObjectPosition(i,_interactiveObjects[i].transform.position);
-                    _sharedSession._messagingManager.BroadcastInteractiveObjectRotation(i,_interactiveObjects[i].transform.rotation);
+                    //TODO: May re-enable a dead ghost on client due to unordered messages
+                    _sharedSession._messagingManager.BroadcastInteractiveObjectPosition(i, _interactiveObjects[i].transform.position);
+                    _sharedSession._messagingManager.BroadcastInteractiveObjectRotation(i, _interactiveObjects[i].transform.rotation);
                 }
+            }            
         }
     }
     public void SetObjectPosition(int index, Vector3 position)
     {
-        
+        _interactiveObjects[index].gameObject.SetActive(true);
+        _interactiveObjects[index].transform.position = position;
     }
     public void SetObjectRotation(int index, Quaternion rotation)
     {

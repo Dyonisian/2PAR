@@ -13,6 +13,8 @@ public class TapInteractive : InteractiveObject
     protected ParticleSystem _destroyEffect;
     [SerializeField]
     protected float _destroyDelay;
+    [SerializeField]
+    protected GameObject _floorObject;
     public override void Trigger()
     {
         _currentTaps++;
@@ -22,6 +24,13 @@ public class TapInteractive : InteractiveObject
             _currentTaps = -1000;
             _destroyEffect.Play();
             StartCoroutine(DisableWithDelay(_destroyDelay));
+        }
+    }
+    private void OnEnable()
+    {
+        if(_floorObject)
+        {
+            _floorObject.transform.position = new Vector3(_floorObject.transform.position.x, Camera.main.transform.position.y - 0.5f, _floorObject.transform.position.z);
         }
     }
 
@@ -36,7 +45,7 @@ public class TapInteractive : InteractiveObject
             StartCoroutine(DisableWithDelay(_destroyDelay));
         }
     }
-    IEnumerator DisableWithDelay(float delay)
+    protected IEnumerator DisableWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         gameObject.SetActive(false);

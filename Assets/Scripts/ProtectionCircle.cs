@@ -25,12 +25,10 @@ public class ProtectionCircle : MonoBehaviour
     {
         
     }
-    void Hit()
+    public void Hit()
     {
         _health -= _damagePerHit;
-        Color color = _spikesRenderer.material.color;
-        color.a = _health;
-        _spikesRenderer.material.color = color;
+        
         if (!_particleSystem.isEmitting)
             _particleSystem.Play();
         if(_health<0.0f)
