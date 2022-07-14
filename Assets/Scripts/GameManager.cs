@@ -99,13 +99,13 @@ public class GameManager : MonoBehaviour
         {
             GameObject spawnTransform = null;
             _arPlaneManager.AddToWall(out spawnTransform);
-            _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.forward * _wallSpawnOffset;
+            _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.up * _wallSpawnOffset;
             //_wallPrints.transform.rotation = spawnTransform.transform.rotation;
             //_wallPrints.transform.forward = spawnTransform.transform.forward;
             _wallPrints.gameObject.SetActive(true);
 
             _arPlaneManager.AddToCeiling(out spawnTransform);
-            _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.up * _wallSpawnOffset;
+            _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
             _ceilingBlood.gameObject.SetActive(true);
 
             //_sharedSession._messagingManager.BroadcastPhase(0);

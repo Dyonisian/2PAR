@@ -2843,13 +2843,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _arPlaneManager: {fileID: 189962152}
   _wallPrints: {fileID: 1325306307599778765}
-  _wallSpawnOffset: 0.1
+  _wallSpawnOffset: 0.5
   _ceilingBlood: {fileID: 6394237615442159894}
   _ghostsToSpawn: 10
   _ghostDelay: 3
   _ghostMoveSpeed: 2
   _interactiveObjectsManager: {fileID: 1885850790720551736}
   _sharedSession: {fileID: 1885850790720551738}
+  _playerHealth: 100
+  _healCooldown: 5
+  _damagePerHit: 10
+  _invincibilityPeriod: 1
   _postVolume: {fileID: 748261099}
   _deathPanelImage: {fileID: 493989036}
 --- !u!114 &890368633
