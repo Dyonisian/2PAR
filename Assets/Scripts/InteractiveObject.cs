@@ -16,4 +16,17 @@ public abstract class InteractiveObject : MonoBehaviour
     {
         OnInteractiveDisable?.Invoke();
     }
+    [SerializeField]
+    protected AudioSource _audioSource;
+    [SerializeField]
+    protected AudioClip _spawnAudio;
+    [SerializeField]
+    protected AudioClip _tapAudio;  
+    [SerializeField]
+    protected AudioClip _dieAudio;
+    [SerializeField]
+    protected AudioClip _nearAudio;
+    protected float _audioTimer = 0.0f;
+    [SerializeField]
+    protected float _audioDelay = 3.0f;
 }

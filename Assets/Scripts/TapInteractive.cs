@@ -19,10 +19,20 @@ public class TapInteractive : InteractiveObject
     {
         _currentTaps++;
         _tapEffect.Play();
+        if (_tapAudio && !_audioSource.isPlaying)
+        {
+            _audioSource.clip = _tapAudio;
+            _audioSource.Play();
+                }
         if(_currentTaps>=_tapsNeeded)
         {
             _currentTaps = -1000;
             _destroyEffect.Play();
+            if(_dieAudio)
+            {
+                _audioSource.clip = _dieAudio;
+                _audioSource.Play();
+            }
             StartCoroutine(DisableWithDelay(_destroyDelay));
         }
     }
@@ -31,6 +41,11 @@ public class TapInteractive : InteractiveObject
         if(_floorObject)
         {
             _floorObject.transform.position = new Vector3(_floorObject.transform.position.x, Camera.main.transform.position.y - 0.5f, _floorObject.transform.position.z);
+        }
+        if(_spawnAudio)
+        {
+            _audioSource.clip = _spawnAudio;
+            _audioSource.Play();
         }
     }
 
@@ -60,6 +75,18 @@ public class TapInteractive : InteractiveObject
     // Update is called once per frame
     void Update()
     {
-        
+        _audioTimer += Time.deltaTime;
+        if (_audioTimer >= _audioDelay)
+        {
+            _audioTimer = 0.0f;
+            if (Random.Range(0, 100) > 50)
+            {
+                if (!_audioSource.isPlaying)
+                {
+                    _audioSource.clip = _nearAudio;
+                    _audioSource.Play();
+                }
+            }
+        }
     }
 }

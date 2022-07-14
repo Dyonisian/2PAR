@@ -13,12 +13,15 @@ public class EnterPortal : InteractiveObject
     ParticleSystem _portalParticles;
     [SerializeField]
     GameManager _gameManager;
+    [SerializeField]
+    AudioSource _ambientSource;
     public override void Trigger()
     {
         _postProcessVolume.enabled = true;
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
         _gameManager.ChangeGameState(0);
+        _ambientSource.Play();
         gameObject.SetActive(false);
     }
     public override void TriggeredByOther()
@@ -27,6 +30,8 @@ public class EnterPortal : InteractiveObject
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
         _gameManager.ChangeGameState(0);
+        _ambientSource.Play();
+
         gameObject.SetActive(false);
 
 

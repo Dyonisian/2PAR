@@ -18,6 +18,7 @@ public class GhostInteractive : TapInteractive
     GameObject _lookTarget;
     public bool _isHost;
     public UnityAction OnHitPlayer;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -27,9 +28,20 @@ public class GhostInteractive : TapInteractive
     // Update is called once per frame
     void Update()
     {
-
         //Ghosts are server authoritative
-
+        _audioTimer += Time.deltaTime;
+        if(_audioTimer>= _audioDelay)
+        {
+            _audioTimer = 0.0f;
+            if(Random.Range(0,100)> 50)
+            {
+                if(_audioSource && _nearAudio && !_audioSource.isPlaying && Vector3.Distance(transform.position, Camera.main.transform.position - Vector3.up / 2.0f) < 4.0f)
+                {
+                    _audioSource.clip = _nearAudio;
+                    _audioSource.Play();
+                }
+            }
+        }
         _timer += Time.deltaTime;
         if(_timer>_moveDelay)
         {
