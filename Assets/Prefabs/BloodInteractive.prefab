@@ -14440,6 +14440,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1199835149062359846, guid: 73d02122b80e9b04d94f80e860a7c580,
         type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1199835149062359846, guid: 73d02122b80e9b04d94f80e860a7c580,
+        type: 3}
       propertyPath: scalingMode
       value: 0
       objectReference: {fileID: 0}
@@ -14692,6 +14697,11 @@ PrefabInstance:
     - target: {fileID: 7910671039462479013, guid: 93acf4c7a48621d489348f83d074ba0f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8000194900802649557, guid: 93acf4c7a48621d489348f83d074ba0f,
+        type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -7,6 +7,7 @@ public class InteractiveObjectsManager : MonoBehaviour
     [SerializeField]
     public Niantic.ARDK.Templates.SharedSession _sharedSession;
     public List<InteractiveObject> _interactiveObjects;
+    public List<GhostInteractive> _ghosts;
     // Start is called before the first frame update
     void Start()
     {

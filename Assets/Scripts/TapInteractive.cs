@@ -5,14 +5,14 @@ using UnityEngine;
 public class TapInteractive : InteractiveObject
 {
     [SerializeField]
-    int _tapsNeeded;
-    int _currentTaps;
+    protected int _tapsNeeded;
+    protected int _currentTaps;
     [SerializeField]
-    ParticleSystem _tapEffect;
+    protected ParticleSystem _tapEffect;
     [SerializeField]
-    ParticleSystem _destroyEffect;
+    protected ParticleSystem _destroyEffect;
     [SerializeField]
-    float _destroyDelay;
+    protected float _destroyDelay;
     public override void Trigger()
     {
         _currentTaps++;

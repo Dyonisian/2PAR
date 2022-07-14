@@ -54,6 +54,8 @@ public class ARDrawManager : MonoBehaviour
     void DrawOnTouch()
     {
         if (!CanDraw) return;
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+
 
         int tapCount = Input.touchCount > 1 && _lineSettings.allowMultiTouch ? Input.touchCount : 1;
         bool isHit = false;
@@ -66,12 +68,11 @@ public class ARDrawManager : MonoBehaviour
                 Vector3 touchPosition = _arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(i).position.x, Input.GetTouch(i).position.y, _lineSettings.distanceFromCamera));
                 _lastTouchPos = touch.position;
                 RaycastHit hit;
-                if (Physics.Raycast(_arCamera.ScreenPointToRay(Input.GetTouch(i).position, Camera.MonoOrStereoscopicEye.Mono), out hit))
-                {
-                    touchPosition = hit.point;
-                    Debug.Log("Drawing on " + hit.collider.name);
-                    isHit = true;
-                }
+                //if (Physics.Raycast(_arCamera.ScreenPointToRay(Input.GetTouch(i).position, Camera.MonoOrStereoscopicEye.Mono), out hit))
+                //{
+                //    touchPosition = hit.point;
+                //    isHit = true;
+                //}
                 var currentFrame = _sharedSession._arNetworking.ARSession.CurrentFrame;
                 if (currentFrame == null) return;
                 if (_sharedSession._camera == null) return;
@@ -105,7 +106,7 @@ public class ARDrawManager : MonoBehaviour
                     circlePos -= circlePos - _arCamera.transform.position;
                     circlePos.y = touchPosition.y;
                     _protectionCircle.transform.position = circlePos;
-                    float circleScale = Vector3.Distance(touchPosition, _arCamera.transform.position);
+                    float circleScale = Vector3.Distance(touchPosition, _arCamera.transform.position) * 2f;
                     _protectionCircle.transform.localScale = new Vector3(circleScale, circleScale, circleScale);
                     _protectionCircle.Reset();
 
@@ -167,20 +168,21 @@ public class ARDrawManager : MonoBehaviour
     void DrawOnMouse()
     {
         if (!CanDraw) return;
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
 
         bool isHit = false;
         Vector3 mousePosition = _arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _lineSettings.distanceFromCamera));
         _lastTouchPos = Input.mousePosition;
 
+
         RaycastHit hit;
-        if (Physics.Raycast(_arCamera.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out hit))
-        {
-            mousePosition = hit.point;
+        //if (Physics.Raycast(_arCamera.ScreenPointToRay(Input.mousePosition, Camera.MonoOrStereoscopicEye.Mono), out hit))
+        //{
+        //    mousePosition = hit.point;
 
-            Debug.Log("Mouse Drawing on " + hit.collider.name);
-            isHit = true;
+        //    isHit = true;
 
-        }
+        //}
         var currentFrame = _sharedSession._arNetworking.ARSession.CurrentFrame;
         if (currentFrame == null) return;
         if (_sharedSession._camera == null) return;
@@ -215,7 +217,7 @@ public class ARDrawManager : MonoBehaviour
                 spawnPos -= spawnPos - _arCamera.transform.position;
                 spawnPos.y = mousePosition.y;
                 _protectionCircle.transform.position = spawnPos;
-                float scale = Vector3.Distance(mousePosition, _arCamera.transform.position);
+                float scale = Vector3.Distance(mousePosition, _arCamera.transform.position) * 2f;
                 _protectionCircle.transform.localScale = new Vector3(scale, scale, scale);
                 _protectionCircle.Reset();
             }

@@ -52,11 +52,10 @@ namespace Niantic.ARDK.Templates
             if (Physics.Raycast(worldRay, out hit, 1000f)) 
             {   
                 {
-                    Debug.Log(hit.collider.name);
+                    //Debug.Log(hit.collider.name);
                     InteractiveObject iObject = hit.transform.GetComponent<InteractiveObject>();
                     if(iObject)
                     {
-                        Debug.Log("Interact!");
                         iObject.Trigger();
                         if (SharedSession._isHost)
                         {
