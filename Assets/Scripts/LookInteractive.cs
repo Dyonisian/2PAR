@@ -72,7 +72,7 @@ public class LookInteractive : TapInteractive
         {
             if (_isHost)
             {
-                if (Vector3.Distance(transform.position, Camera.main.transform.position - Vector3.up / 2.0f) > 0.5f)
+                if (Vector3.Distance(transform.position, Camera.main.transform.position - Vector3.up / 2.0f) > 1.0f)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, Camera.main.transform.position - Vector3.up / 1.5f, _moveSpeed / 100.0f);
                 }

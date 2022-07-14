@@ -142,14 +142,19 @@ public class GameManager : MonoBehaviour
             _wallPrints.OnInteractiveDisable -= InteractiveDisabled;
             _wallPrints.OnInteractiveDisable += InteractiveDisabled;
 
+            spawnTransform = null;
             bool success = _arPlaneManager.AddToCeiling(out spawnTransform);
-            if(!success)
+            if (!success)
             {
-                spawnTransform = Instantiate(new GameObject());
-                spawnTransform.transform.position = Camera.main.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), 2, Random.Range(-1.0f, 1.0f));
+                Vector3 temp = _lookTarget.transform.position;
+                _lookTarget.transform.position = Camera.main.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), 2, Random.Range(-1.0f, 1.0f));
+                _ceilingBlood.transform.position = _lookTarget.transform.position - _lookTarget.transform.right * _wallSpawnOffset;
+                _lookTarget.transform.position = temp;
             }
-
-            _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
+            else
+            {
+                _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
+            }
             StartCoroutine(SetActiveWithDelay(_ceilingBlood.gameObject, _delayBetweenSpawns*2));
             _activeObjects++;
             _ceilingBlood.OnInteractiveDisable -= InteractiveDisabled;
@@ -220,14 +225,11 @@ public class GameManager : MonoBehaviour
             _ghostStanding.OnHitPlayer += Hit;
 
 
-
-            bool success = _arPlaneManager.AddToCeiling(out spawnTransform);
-            if (!success)
-            {
-                spawnTransform = Instantiate(new GameObject());
-                spawnTransform.transform.position = Camera.main.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), 2, Random.Range(-1.0f, 1.0f));
-            }
-            _crawlerCeiling.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
+            spawnTransform = null;
+            _arPlaneManager.AddToFloor(out spawnTransform);           
+            
+                _crawlerCeiling.transform.position = spawnTransform.transform.position + spawnTransform.transform.right * _wallSpawnOffset + Vector3.up * 2.0f;
+            
             _crawlerCeiling._isHost = _sharedSession._isHost;
             _crawlerCeiling._moveSpeed = _ghostMoveSpeed;
             StartCoroutine(SetActiveWithDelay(_crawlerCeiling.gameObject, _delayBetweenSpawns * 2));

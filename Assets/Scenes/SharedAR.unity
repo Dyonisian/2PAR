@@ -3039,7 +3039,7 @@ MonoBehaviour:
   _keyFrameFrequency: 20
   _interpolation: 2
   _interpolationPreference: 0.9
-  _occlusionMode: 3
+  _occlusionMode: 0
   _textureFilterMode: 0
 --- !u!82 &748261103
 AudioSource:
@@ -5189,6 +5189,14 @@ PrefabInstance:
       propertyPath: _lookTarget
       value: 
       objectReference: {fileID: 15550477}
+    - target: {fileID: 1103619909, guid: 9a8d5000c078791428ec2daa2d4ea5f1, type: 3}
+      propertyPath: _tapsNeeded
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1103619909, guid: 9a8d5000c078791428ec2daa2d4ea5f1, type: 3}
+      propertyPath: _sharedSession
+      value: 
+      objectReference: {fileID: 1885850790720551738}
     - target: {fileID: 240687048333084878, guid: 9a8d5000c078791428ec2daa2d4ea5f1,
         type: 3}
       propertyPath: m_Name
@@ -7638,6 +7646,11 @@ PrefabInstance:
       propertyPath: _lookTarget
       value: 
       objectReference: {fileID: 15550477}
+    - target: {fileID: 2741447435023771466, guid: ddb431b0d18343c4e8e3819b8d5d7d8b,
+        type: 3}
+      propertyPath: _sharedSession
+      value: 
+      objectReference: {fileID: 1885850790720551738}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddb431b0d18343c4e8e3819b8d5d7d8b, type: 3}
 --- !u!114 &4919332675596469345
@@ -7999,6 +8012,16 @@ PrefabInstance:
       propertyPath: _lookTarget
       value: 
       objectReference: {fileID: 15550477}
+    - target: {fileID: 6348809885613629816, guid: 32fc3dd191e6e804f9814fd1c1382706,
+        type: 3}
+      propertyPath: _tapsNeeded
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6348809885613629816, guid: 32fc3dd191e6e804f9814fd1c1382706,
+        type: 3}
+      propertyPath: _sharedSession
+      value: 
+      objectReference: {fileID: 1885850790720551738}
     - target: {fileID: 6348809885613629816, guid: 32fc3dd191e6e804f9814fd1c1382706,
         type: 3}
       propertyPath: _firstAnimTriggerName

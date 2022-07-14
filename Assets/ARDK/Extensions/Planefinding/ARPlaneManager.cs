@@ -225,8 +225,10 @@ namespace Niantic.ARDK.Extensions
             spawnTransform = new GameObject();
             foreach (var plane in _planeList)
             {
-                if (plane._planeAlignment == PlaneAlignment.Horizontal && plane.transform.position.y > Camera.main.transform.position.y)
+                if (plane._planeAlignment == PlaneAlignment.Horizontal && plane.transform != null && plane.transform.position.y > Camera.main.transform.position.y)
                 {
+                    if (plane.gameObject == null)
+                        continue;
                     spawnTransform = plane.gameObject;
                     return true;
                 }

@@ -29,7 +29,7 @@ public class EnterPortal : InteractiveObject
         _postProcessVolume.enabled = true;
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
-        _gameManager.ChangeGameState(2);
+        _gameManager.ChangeGameState(3);
         _ambientSource.Play();
 
         gameObject.SetActive(false);
