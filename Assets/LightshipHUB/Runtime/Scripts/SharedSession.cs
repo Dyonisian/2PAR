@@ -110,7 +110,7 @@ namespace Niantic.ARDK.Templates
 
         internal void SetObjectPosition(Vector3 position) 
         {
-            if (!SharedObjectHolder.gameObject.activeSelf && _isStable) SharedObjectHolder.gameObject.SetActive(true);
+            if (!SharedObjectHolder.gameObject.activeSelf) SharedObjectHolder.gameObject.SetActive(true);
             SharedObjectHolder.gameObject.transform.position = position;
         }
 

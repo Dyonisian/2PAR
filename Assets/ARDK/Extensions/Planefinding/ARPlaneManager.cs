@@ -217,6 +217,7 @@ namespace Niantic.ARDK.Extensions
                     return true;
                 }
             }
+            
             return false;
         }
         public bool AddToCeiling(out GameObject spawnTransform)
@@ -230,6 +231,21 @@ namespace Niantic.ARDK.Extensions
                     return true;
                 }
             }
+            
+            return false;
+        }
+        public bool AddToFloor(out GameObject spawnTransform)
+        {
+            spawnTransform = new GameObject();
+            foreach (var plane in _planeList)
+            {
+                if (plane._planeAlignment == PlaneAlignment.Horizontal && plane.transform.position.y < Camera.main.transform.position.y)
+                {
+                    spawnTransform = plane.gameObject;
+                    return true;
+                }
+            }
+            
             return false;
         }
     }

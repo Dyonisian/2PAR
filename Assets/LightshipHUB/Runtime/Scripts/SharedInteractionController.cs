@@ -18,6 +18,8 @@ namespace Niantic.ARDK.Templates
         public SharedSession SharedSession;
         public float TriggerDistance = 1.5f;
         bool _isObjectPlaced = false;
+        [SerializeField]
+        Text _debugText;
 
         private void Update() 
         {
@@ -48,7 +50,7 @@ namespace Niantic.ARDK.Templates
 
             var worldRay = SharedSession._camera.ScreenPointToRay(touch.position);
             RaycastHit hit;
-
+            
             if (Physics.Raycast(worldRay, out hit, 1000f)) 
             {   
                 {
@@ -79,12 +81,15 @@ namespace Niantic.ARDK.Templates
 
                 if (hitTestResults.Count <= 0) return;
 
+                if(!_isObjectPlaced)
+                    _debugText.text = "Object placed!";
+
                 _isObjectPlaced = true;
                 var position = hitTestResults[0].WorldTransform.ToPosition();
 
                 if (SharedSession._isHost) 
                 {
-                    if (!SharedSession.SharedObjectHolder.gameObject.activeSelf && SharedSession._isStable) 
+                    if (!SharedSession.SharedObjectHolder.gameObject.activeSelf) 
                     {
                         SharedSession.SharedObjectHolder.gameObject.SetActive(true);
                     }

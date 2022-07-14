@@ -46,6 +46,23 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Image _deathPanelImage;
 
+    [SerializeField]
+    TapInteractive _ghostStanding;
+    [SerializeField]
+    TapInteractive _markOnWall;
+    [SerializeField]
+    TapInteractive _crawlerCeiling;
+    [SerializeField]
+    TapInteractive _ghostOnPlayer;
+    [SerializeField]
+    Text _debugText;
+
+    float _spawnTimer = 0.0f;
+    [SerializeField]
+    float _delayBetweenSpawns = 10.0f;
+
+    int _activeObjects = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +74,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(_sharedSession._isHost && _gameState == 0 && !_wallPrints.gameObject.activeSelf && !_ceilingBlood.gameObject.activeSelf)
+        _spawnTimer += Time.deltaTime;
+        if(_sharedSession._isHost && _gameState == 0 && _activeObjects<=0)
         {
             ChangeGameState(1);
         }
@@ -79,6 +97,7 @@ public class GameManager : MonoBehaviour
     {
         if (_gameState == newState)
             return;
+        _spawnTimer = 0.0f;
         _gameState = newState;
         switch(newState)
         {
@@ -93,8 +112,14 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    IEnumerator SetActiveWithDelay(GameObject go, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        go.SetActive(true);
+    }    
     void StartPhase0()
     {
+        _debugText.text = "Started phase 0!";
         if (_sharedSession._isHost)
         {
             GameObject spawnTransform = null;
@@ -102,12 +127,23 @@ public class GameManager : MonoBehaviour
             _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.up * _wallSpawnOffset;
             //_wallPrints.transform.rotation = spawnTransform.transform.rotation;
             //_wallPrints.transform.forward = spawnTransform.transform.forward;
-            _wallPrints.gameObject.SetActive(true);
+            StartCoroutine(SetActiveWithDelay(_wallPrints.gameObject,_delayBetweenSpawns));
+            _activeObjects++;
+            _wallPrints.OnInteractiveDisable -= InteractiveDisabled;
+            _wallPrints.OnInteractiveDisable += InteractiveDisabled;
 
-            _arPlaneManager.AddToCeiling(out spawnTransform);
+            bool success = _arPlaneManager.AddToCeiling(out spawnTransform);
+            if(!success)
+            {
+                spawnTransform = Instantiate(new GameObject());
+                spawnTransform.transform.position = Camera.main.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), 2, Random.Range(-1.0f, 1.0f));
+            }
+
             _ceilingBlood.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
-            _ceilingBlood.gameObject.SetActive(true);
-
+            StartCoroutine(SetActiveWithDelay(_ceilingBlood.gameObject, _delayBetweenSpawns*2));
+            _activeObjects++;
+            _ceilingBlood.OnInteractiveDisable -= InteractiveDisabled;
+            _ceilingBlood.OnInteractiveDisable += InteractiveDisabled;
             //_sharedSession._messagingManager.BroadcastPhase(0);
 
         }
@@ -119,13 +155,15 @@ public class GameManager : MonoBehaviour
     }
     void StartPhase1()
     {
+        _debugText.text = "Started phase 1!";
+
         _ghostsAlive = 0;
         //if (_sharedSession._isHost)
         {
             for(int i =0; i<_ghostsToSpawn; i++)
             {
                 _interactiveObjectsManager._ghosts[i].gameObject.SetActive(true);
-                _interactiveObjectsManager._ghosts[i]._moveDelay = _ghostDelay * i;
+                _interactiveObjectsManager._ghosts[i]._moveDelay = _delayBetweenSpawns + _ghostDelay * i;
                 _interactiveObjectsManager._ghosts[i]._moveSpeed = _ghostMoveSpeed;
                 //positions will be overwritten on client
                 _interactiveObjectsManager._ghosts[i].transform.position = Camera.main.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f)).normalized * 10;
@@ -141,13 +179,30 @@ public class GameManager : MonoBehaviour
         }        
         if(_sharedSession._isHost)
         {
+            
+
             _sharedSession._messagingManager.BroadcastPhase(1);
         }
     }
     void StartPhase2()
     {
+        _debugText.text = "Started phase 2!";
+
         if (_sharedSession._isHost)
         {
+            GameObject spawnTransform = null;
+            _arPlaneManager.AddToFloor(out spawnTransform);
+            _ghostStanding.transform.position = spawnTransform.transform.position + spawnTransform.transform.right * _wallSpawnOffset;
+            StartCoroutine(SetActiveWithDelay(_ghostStanding.gameObject, _delayBetweenSpawns));
+
+            _arPlaneManager.AddToWall(out spawnTransform);
+            _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.up * _wallSpawnOffset;
+            StartCoroutine(SetActiveWithDelay(_wallPrints.gameObject, _delayBetweenSpawns * 2));
+
+            _arPlaneManager.AddToCeiling(out spawnTransform);
+            _crawlerCeiling.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
+            StartCoroutine(SetActiveWithDelay(_crawlerCeiling.gameObject, _delayBetweenSpawns * 2));
+
             Debug.Log("Starting Phase 2!");
             _sharedSession._messagingManager.BroadcastPhase(2);
         }
@@ -155,6 +210,10 @@ public class GameManager : MonoBehaviour
     void GhostDied()
     {
         _ghostsAlive--;
+    }
+    void InteractiveDisabled()
+    {
+        _activeObjects--;
     }
     public void Hit()
     {

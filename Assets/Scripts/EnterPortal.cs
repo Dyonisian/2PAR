@@ -19,6 +19,7 @@ public class EnterPortal : InteractiveObject
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
         _gameManager.ChangeGameState(0);
+        gameObject.SetActive(false);
     }
     public override void TriggeredByOther()
     {
@@ -26,6 +27,8 @@ public class EnterPortal : InteractiveObject
         _dustParticles.gameObject.SetActive(true);
         _portalParticles.Stop();
         _gameManager.ChangeGameState(0);
+        gameObject.SetActive(false);
+
 
     }
 
