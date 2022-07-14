@@ -192,6 +192,8 @@ public class GameManager : MonoBehaviour
             _sharedSession._messagingManager.BroadcastPhase(1);
         }
     }
+
+    
     void StartPhase2()
     {
         _debugText.text = "Started phase 2!";

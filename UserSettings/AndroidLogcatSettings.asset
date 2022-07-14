@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "9B201FFAZ004K2",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "9B201FFAZ004K2",
+        "name": "com.DefaultCompany.PHorrorAR",
+        "processId": 15848,
         "exited": false
     },
     "m_SelectedPriority": 1,
@@ -43,6 +43,12 @@
             "name": "com.DefaultCompany.PHorrorAR",
             "processId": 12697,
             "exited": true
+        },
+        {
+            "deviceId": "9B201FFAZ004K2",
+            "name": "com.DefaultCompany.PHorrorAR",
+            "processId": 15848,
+            "exited": false
         }
     ],
     "m_Tags": {

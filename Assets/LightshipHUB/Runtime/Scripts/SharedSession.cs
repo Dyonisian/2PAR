@@ -6,6 +6,7 @@ using Niantic.ARDK.Extensions;
 using Niantic.ARDK.Networking;
 using Niantic.ARDK.Networking.MultipeerNetworkingEventArgs;
 using Niantic.ARDK.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -155,6 +156,11 @@ namespace Niantic.ARDK.Templates
         internal void SetGamePhase(int index)
         {
             _gameManager.ChangeGameState(index);
+        }
+
+        internal void ActivateLookInteractive(ushort v)
+        {
+            _interactiveObjectsManager.ActivateLookInteractive(v);
         }
     }
 }

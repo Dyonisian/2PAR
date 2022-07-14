@@ -34,7 +34,9 @@ namespace Niantic.ARDK.Templates
             InteractiveObjectPositionMessage,
             InteractiveObjectRotationMessage,
             PhaseMessage,
-            AskPhase
+            AskPhase,
+            BroadcastLookInteractiveActive,
+            AskLookInteractiveActive
         }
 
        
@@ -115,6 +117,26 @@ namespace Niantic.ARDK.Templates
                 TransportType.ReliableUnordered
             );
         }
+
+        internal void BroadcastLookInteractiveActive(int index)
+        {
+            _networking.BroadcastData(
+                            (uint)_MessageType.BroadcastLookInteractiveActive,
+                            SerializeUint(Convert.ToUInt16(index)),
+                            TransportType.UnreliableUnordered
+                        );
+        }
+
+        internal void AskLookInteractiveActive(IPeer host, int index)
+        {
+            _networking.SendDataToPeer(
+                                        (uint)_MessageType.AskLookInteractiveActive,
+                                        SerializeUint(Convert.ToUInt16(index)),
+                                        host,
+                                        TransportType.ReliableUnordered
+                                    );
+        }
+
         internal void AskHostToAddToLine(IPeer host, int fingerId, Vector3 touchPosition)
         {
             _networking.SendDataToPeer(
@@ -287,6 +309,10 @@ namespace Niantic.ARDK.Templates
                 case _MessageType.AskPhase:
                 case _MessageType.PhaseMessage:
                     _controller.SetGamePhase(DeserializeUint(data));
+                    break;
+                case _MessageType.BroadcastLookInteractiveActive:
+                case _MessageType.AskLookInteractiveActive:
+                    _controller.ActivateLookInteractive(DeserializeUint(data));
                     break;
                 default:
                     throw new ArgumentException("Received unknown tag from message");

@@ -24,6 +24,8 @@ public class LookInteractive : TapInteractive
     string _attackTriggerName;
     [SerializeField]
     string _firstAnimTriggerName;
+    [SerializeField]
+    public Niantic.ARDK.Templates.SharedSession _sharedSession;
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +110,15 @@ public class LookInteractive : TapInteractive
         }
     }
     public virtual void Activate()
+    {
+        _isAttacking = true;
+        _animator.SetBool(_attackTriggerName, true);
+        if (_sharedSession._isHost)
+            _sharedSession._messagingManager.BroadcastLookInteractiveActive(_index);
+        else
+            _sharedSession._messagingManager.AskLookInteractiveActive(_sharedSession._host, _index);
+    }
+    public virtual void ActivatedByOther()
     {
         _isAttacking = true;
         _animator.SetBool(_attackTriggerName, true);

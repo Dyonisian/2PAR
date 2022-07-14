@@ -48,4 +48,8 @@ public class InteractiveObjectsManager : MonoBehaviour
     {
         _interactiveObjects[index].TriggeredByOther();
     }
+    public void ActivateLookInteractive(int index)
+    {
+        (_interactiveObjects[index] as LookInteractive).ActivatedByOther();
+    }
 }
