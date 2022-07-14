@@ -1,10 +1,10 @@
 {
-    "m_SelectedDeviceId": "RF8M70V2HVM",
+    "m_SelectedDeviceId": "9B201FFAZ004K2",
     "m_SelectedPackage": {
-        "deviceId": "RF8M70V2HVM",
-        "name": "com.DefaultCompany.PHorrorAR",
-        "processId": 8501,
-        "exited": true
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
+        "exited": false
     },
     "m_SelectedPriority": 1,
     "m_KnownPackagesForSerialization": [
@@ -36,6 +36,12 @@
             "deviceId": "RF8M70V2HVM",
             "name": "com.DefaultCompany.PHorrorAR",
             "processId": 8501,
+            "exited": true
+        },
+        {
+            "deviceId": "9B201FFAZ004K2",
+            "name": "com.DefaultCompany.PHorrorAR",
+            "processId": 12697,
             "exited": true
         }
     ],

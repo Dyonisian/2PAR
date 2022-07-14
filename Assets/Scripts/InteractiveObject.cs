@@ -9,6 +9,10 @@ public abstract class InteractiveObject : MonoBehaviour
     public int _index;
     
     public bool _shouldBroadcast;
+    public bool _isActivatedOnLook;
+    public bool _isActivatedOnLookAway;
+    public bool _isActivatedOnSecondLook;
+    public bool _isActivatedOnTrigger;
     public abstract void Trigger();
     public abstract void TriggeredByOther();
     public UnityAction OnInteractiveDisable;

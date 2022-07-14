@@ -47,13 +47,15 @@ public class GameManager : MonoBehaviour
     Image _deathPanelImage;
 
     [SerializeField]
-    TapInteractive _ghostStanding;
+    LookInteractive _ghostStanding;
     [SerializeField]
     TapInteractive _markOnWall;
     [SerializeField]
-    TapInteractive _crawlerCeiling;
+    LookInteractive _crawlerCeiling;
     [SerializeField]
-    TapInteractive _ghostOnPlayer;
+    LookInteractive _ghostOnPlayer;
+    [SerializeField]
+    GameObject _lookTarget;
     [SerializeField]
     Text _debugText;
 
@@ -109,6 +111,9 @@ public class GameManager : MonoBehaviour
                 break;
             case 2:
                 StartPhase2();
+                break;
+            case 3:
+                StartPhase3();
                 break;
         }
     }
@@ -178,9 +183,7 @@ public class GameManager : MonoBehaviour
             }
         }        
         if(_sharedSession._isHost)
-        {
-            
-
+        {          
             _sharedSession._messagingManager.BroadcastPhase(1);
         }
     }
@@ -193,18 +196,51 @@ public class GameManager : MonoBehaviour
             GameObject spawnTransform = null;
             _arPlaneManager.AddToFloor(out spawnTransform);
             _ghostStanding.transform.position = spawnTransform.transform.position + spawnTransform.transform.right * _wallSpawnOffset;
+            Vector3 lookTargetOldPos = _lookTarget.transform.position;
+            _lookTarget.transform.position = new Vector3(_lookTarget.transform.position.x, _ghostStanding.transform.position.y, _lookTarget.transform.position.z);
+            _lookTarget.transform.position = _ghostStanding.transform.position - Camera.main.transform.position;
+            _ghostStanding.transform.LookAt(_lookTarget.transform);
+            _lookTarget.transform.position = lookTargetOldPos;
+            _ghostStanding._isHost = _sharedSession._isHost;
+            _ghostStanding._moveSpeed = _ghostMoveSpeed;
+            
             StartCoroutine(SetActiveWithDelay(_ghostStanding.gameObject, _delayBetweenSpawns));
+            _activeObjects++;
+            _ghostStanding.OnInteractiveDisable -= InteractiveDisabled;
+            _ghostStanding.OnInteractiveDisable += InteractiveDisabled;
+            _ghostStanding.OnHitPlayer -= Hit;
+            _ghostStanding.OnHitPlayer += Hit;
 
-            _arPlaneManager.AddToWall(out spawnTransform);
-            _wallPrints.transform.position = spawnTransform.transform.position + spawnTransform.transform.up * _wallSpawnOffset;
-            StartCoroutine(SetActiveWithDelay(_wallPrints.gameObject, _delayBetweenSpawns * 2));
 
-            _arPlaneManager.AddToCeiling(out spawnTransform);
+
+            bool success = _arPlaneManager.AddToCeiling(out spawnTransform);
+            if (!success)
+            {
+                spawnTransform = Instantiate(new GameObject());
+                spawnTransform.transform.position = Camera.main.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), 2, Random.Range(-1.0f, 1.0f));
+            }
             _crawlerCeiling.transform.position = spawnTransform.transform.position - spawnTransform.transform.right * _wallSpawnOffset;
+            _crawlerCeiling._isHost = _sharedSession._isHost;
+            _crawlerCeiling._moveSpeed = _ghostMoveSpeed;
             StartCoroutine(SetActiveWithDelay(_crawlerCeiling.gameObject, _delayBetweenSpawns * 2));
+            _crawlerCeiling.OnInteractiveDisable -= InteractiveDisabled;
+            _crawlerCeiling.OnInteractiveDisable -= InteractiveDisabled;
+            _crawlerCeiling.OnHitPlayer -= Hit;
+            _crawlerCeiling.OnHitPlayer += Hit;
+            _activeObjects++;
+
 
             Debug.Log("Starting Phase 2!");
             _sharedSession._messagingManager.BroadcastPhase(2);
+        }
+    }
+    void StartPhase3()
+    {
+        _debugText.text = "Started phase 3!";
+        if (_sharedSession._isHost)
+        {
+
+            _sharedSession._messagingManager.BroadcastPhase(3);
         }
     }
     void GhostDied()
@@ -223,4 +259,5 @@ public class GameManager : MonoBehaviour
             _timeSinceHit = 0;
         }
     }
+    
 }

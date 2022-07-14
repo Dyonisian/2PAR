@@ -18,6 +18,7 @@ public class GhostInteractive : TapInteractive
     GameObject _lookTarget;
     public bool _isHost;
     public UnityAction OnHitPlayer;
+    public bool _isFinal = false;
     
     // Start is called before the first frame update
     void Start()
@@ -89,8 +90,11 @@ public class GhostInteractive : TapInteractive
     private void OnEnable()
     {
         _timer = 0.0f;
-        _ghostAnimator.SetBool("IsWalk", true);
-        _ghostAnimator.SetBool("IsAttack", false); 
+        if (!_isFinal)
+        {
+            _ghostAnimator.SetBool("IsWalk", true);
+            _ghostAnimator.SetBool("IsAttack", false);
+        }
     }
     public override void TriggeredByOther()
     {
